@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Курсова_Робота.DB">
+    <Position X="4" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABABAAAQAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>DB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Курсова_Робота.Form1">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="Coin" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="Exit" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="Level" Hidden="true" />
+      <Field Name="LogMenuButton" Hidden="true" />
+      <Field Name="Lose" Hidden="true" />
+      <Field Name="Opponent1" Hidden="true" />
+      <Field Name="Opponent2" Hidden="true" />
+      <Field Name="Panel" Hidden="true" />
+      <Field Name="Pause" Hidden="true" />
+      <Field Name="Player" Hidden="true" />
+      <Field Name="Restart" Hidden="true" />
+      <Field Name="Road" Hidden="true" />
+      <Field Name="Road2" Hidden="true" />
+      <Field Name="Score" Hidden="true" />
+      <Field Name="ShowRecordsButton" Hidden="true" />
+      <Field Name="Start" Hidden="true" />
+      <Field Name="Timer" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Struct Name="Курсова_Робота.Form1.MyPoint" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Form1.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EAAgQAEAAnAAQAhIMADADoQCwCECAgQBIAloASAEYAA=</HashCode>
+      <FileName>Form1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Курсова_Робота.LoginForm">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="Exit" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="Login" Hidden="true" />
+      <Field Name="Login_click" Hidden="true" />
+      <Field Name="Main" Hidden="true" />
+      <Field Name="Password" Hidden="true" />
+      <Field Name="pictureBox1" Hidden="true" />
+      <Field Name="pictureBox2" Hidden="true" />
+      <Field Name="RegistrationLink" Hidden="true" />
+      <Field Name="Up" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AMQAAAEAACAAABAAAACCAAACQCQAAAADKBAQBABAAAI=</HashCode>
+      <FileName>LoginForm.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="lastPoint" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Курсова_Робота.Program">
+    <Position X="4" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Курсова_Робота.Prompt">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Prompt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Курсова_Робота.Record">
+    <Position X="6.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Record.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Курсова_Робота.RecordsManager">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABEAAAAAAAAAAAAAAAAAEAAAACAAAAAAAA=</HashCode>
+      <FileName>RecordsManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Курсова_Робота.RegisterForm">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="Exit" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="Login" Hidden="true" />
+      <Field Name="LoginLink" Hidden="true" />
+      <Field Name="Main" Hidden="true" />
+      <Field Name="NameLine" Hidden="true" />
+      <Field Name="Password" Hidden="true" />
+      <Field Name="pictureBox1" Hidden="true" />
+      <Field Name="pictureBox2" Hidden="true" />
+      <Field Name="Registration" Hidden="true" />
+      <Field Name="Surname" Hidden="true" />
+      <Field Name="Up" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQAABFIACEAABAIEACCoCACxCAAAAADKAAQBADFAAI=</HashCode>
+      <FileName>RegisterForm.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="lastPoint" />
+    </ShowAsAssociation>
+  </Class>
+  <Struct Name="System.Drawing.Point" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,38 @@
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\Курсова Робота.exe.config
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\Курсова Робота.exe
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\Курсова Робота.pdb
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.AssemblyReference.cache
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.Form1.resources
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.Properties.Resources.resources
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.GenerateResource.cache
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.CoreCompileInputs.cache
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Курсова Робота.exe
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Курсова Робота.pdb
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.LoginForm.resources
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\MySql.Data.dll
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\System.Memory.dll
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\System.Buffers.dll
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\MySql.Data.xml
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.RegisterForm.resources
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\bin\Debug\sound.wav
+C:\Users\ipz23\source\repos\Курсова Робота\Курсова Робота\obj\Debug\Retro Tr.F3E28D42.Up2Date
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\sound.wav
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\Курсова Робота.exe.config
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\Курсова Робота.exe
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\Курсова Робота.pdb
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\System.Memory.dll
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\bin\Debug\System.Buffers.dll
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.AssemblyReference.cache
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.Form1.resources
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.LoginForm.resources
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.Properties.Resources.resources
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова_Робота.RegisterForm.resources
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.GenerateResource.cache
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.CoreCompileInputs.cache
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Retro Tr.F3E28D42.Up2Date
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова Робота.exe
+C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова Робота.pdb
