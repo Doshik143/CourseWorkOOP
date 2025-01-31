@@ -1,279 +1,232 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Media;
+using System.Text;
+using System.Windows.Forms;
 
 namespace Курсова_Робота
 {
     public partial class Form1 : Form
     {
-        private SoundPlayer _player;
-        private List<Record> records;
-        private Point pos;
-        private bool traffic, lose = false;
-        private int coins = 0;
-        private int level = 1;
+        private readonly SoundManager _soundManager;
+        private readonly Random _random = new Random();
+        private List<Record> _records;
+        
+        private bool _isGameOver = false;
+        private int _score = 0;
+        private int _level = 1;
+        
+        private const int RoadSpeed = 10;
+        private const int OpponentSpeed = 7;
+        private const int CoinSpeed = 7;
+        private const int PlayerSpeed = 13;
+        
+        private enum GameState { Running, Paused, Lost }
+        private GameState _currentState;
+
         public Form1()
         {
             InitializeComponent();
-            
-            Lose.Visible = false;
-            Restart.Visible = false;
-
-            KeyPreview = true;
-
-            Pause.Visible = true;
-            Start.Visible = false;
-
-            LogMenuButton.Visible = false;
-
-            Level.Text = "Рівень: 1";
-
-            records = RecordsManager.LoadRecords();
-
-            ShowRecordsButton.Visible = false;
-
-            _player = new SoundPlayer("sound.wav");
-            _player.PlayLooping();
+            InitializeGame();
         }
 
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        private void InitializeGame()
         {
-            if(e.KeyChar==(char)Keys.Escape)
-                Application.Exit();
+            _records = RecordsManager.LoadRecords();
+            _soundManager = new SoundManager("sound.wav");
+            _soundManager.PlayLooping();
+            
+            _currentState = GameState.Paused;
+            UpdateUI();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int speed = 10;
-            Road.Top += speed;
-            Road2.Top += speed;
-            int carspeed = 7;
-            Opponent1.Top += carspeed;
-            Opponent2.Top += carspeed;
-            int cointime = 7;
-            Coin.Top += cointime;
-            if (Coin.Top >= 650)
-            {
-                Coin.Top = -50;
-                Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
-            }
+            if (_currentState != GameState.Running) return;
+
+            MoveRoad();
+            MoveOpponents();
+            MoveCoin();
+            CheckCollisions();
+        }
+
+        private void MoveRoad()
+        {
+            Road.Top += RoadSpeed;
+            Road2.Top += RoadSpeed;
             if (Road.Top >= 650)
             {
                 Road.Top = 0;
                 Road2.Top = -650;
             }
-            if (Opponent1.Top >= 650)
-            {
-                Opponent1.Top = -130;
-                Random rand = new Random();
-                Opponent1.Left = rand.Next(150, 299);
-            }
-            if (Opponent2.Top >= 650)
-            {
-                Opponent2.Top = -400;
-                Random rand = new Random();
-                Opponent2.Left = rand.Next(301, 560);
-            }
+        }
+
+        private void MoveOpponents()
+        {
+            Opponent1.Top += OpponentSpeed;
+            Opponent2.Top += OpponentSpeed;
+
+            if (Opponent1.Top >= 650) ResetOpponent(Opponent1, 150, 299);
+            if (Opponent2.Top >= 650) ResetOpponent(Opponent2, 301, 560);
+        }
+
+        private void ResetOpponent(PictureBox opponent, int minX, int maxX)
+        {
+            opponent.Top = -130;
+            opponent.Left = _random.Next(minX, maxX);
+        }
+
+        private void MoveCoin()
+        {
+            Coin.Top += CoinSpeed;
+            if (Coin.Top >= 650) ResetCoin();
+        }
+
+        private void ResetCoin()
+        {
+            Coin.Top = -50;
+            Coin.Left = _random.Next(150, 560);
+        }
+
+        private void CheckCollisions()
+        {
             if (Player.Bounds.IntersectsWith(Opponent1.Bounds) || Player.Bounds.IntersectsWith(Opponent2.Bounds))
             {
-                Timer.Enabled = false;
-                Lose.Visible = true;
-                Restart.Visible = true;
-                Pause.Visible = false;
-                lose = true;
-                LogMenuButton.Visible = true;
-                SaveRecord();
-                ShowRecordsButton.Visible = true;
-                _player.Stop();
+                HandleGameOver();
             }
-            if (Player.Bounds.IntersectsWith(Coin.Bounds))
+            else if (Player.Bounds.IntersectsWith(Coin.Bounds))
             {
-                coins++;
-                Score.Text = "Score:" + coins.ToString();
-                if (coins % 10 == 0)
-                {
-                    level++;
-                    Level.Text = "Рівень: " + level.ToString();
-                }
-                Coin.Top = -50;
-                Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
+                HandleCoinPickup();
             }
+        }
+
+        private void HandleGameOver()
+        {
+            _currentState = GameState.Lost;
+            Timer.Enabled = false;
+            _soundManager.Stop();
+            SaveRecord();
+            UpdateUI();
+        }
+
+        private void HandleCoinPickup()
+        {
+            _score++;
+            if (_score % 10 == 0)
+            {
+                _level++;
+            }
+            ResetCoin();
+            UpdateUI();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (lose) return;
-            int speed = 13;
+            if (_currentState == GameState.Lost) return;
+
             if ((e.KeyCode == Keys.Left || e.KeyCode == Keys.A) && Player.Left > 150)
-                Player.Left -= speed;
+                Player.Left -= PlayerSpeed;
             else if ((e.KeyCode == Keys.Right || e.KeyCode == Keys.D) && Player.Right < 700)
-                Player.Left += speed;
+                Player.Left += PlayerSpeed;
         }
 
-        private void Exit_Click(object sender, EventArgs e)
+        private void Start_Click(object sender, EventArgs e) => SetGameState(GameState.Running);
+        private void Pause_Click(object sender, EventArgs e) => SetGameState(GameState.Paused);
+        private void Exit_Click(object sender, EventArgs e) => Application.Exit();
+
+        private void SetGameState(GameState newState)
         {
-            Application.Exit();
+            _currentState = newState;
+            Timer.Enabled = newState == GameState.Running;
+
+            if (newState == GameState.Running) _soundManager.PlayLooping();
+            else _soundManager.Stop();
+
+            UpdateUI();
         }
 
-        private void Exit_MouseEnter(object sender, EventArgs e)
+        private void Restart_Click(object sender, EventArgs e)
         {
-            Exit.ForeColor = Color.Red;
+            _score = 0;
+            _level = 1;
+
+            ResetOpponent(Opponent1, 150, 299);
+            ResetOpponent(Opponent2, 301, 560);
+            ResetCoin();
+
+            SetGameState(GameState.Running);
         }
 
-        private void Exit_MouseLeave(object sender, EventArgs e)
-        {
-            Exit.ForeColor = Color.Black;
-        }
-
-        private void Start_Click(object sender, EventArgs e)
-        {
-            Pause.Visible = true;
-            Start.Visible = false;
-            Timer.Enabled = true;
-            LogMenuButton.Visible = false;
-            ShowRecordsButton.Visible = false;
-            _player.PlayLooping();
-        }
-
-        private void Pause_Click(object sender, EventArgs e)
-        {
-            Pause.Visible = false;
-            Start.Visible = true;
-            LogMenuButton.Visible = true;
-            Timer.Enabled = false;
-            ShowRecordsButton.Visible = true;
-            _player.Stop();
-        }
-
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        public struct MyPoint
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-
-            public MyPoint(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
-        }
-
-        MyPoint LastPoint;
-
-        private void Panel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                int deltaX = e.X - LastPoint.X;
-                int deltaY = e.Y - LastPoint.Y;
-
-                this.Left += deltaX;
-                this.Top += deltaY;
-
-                LastPoint = new MyPoint(e.X, e.Y);
-            }
-        }
-
-        private void Panel_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                LastPoint = new MyPoint(e.X, e.Y);
-            }
-        }
-
-        private void LogMenuButton_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            LoginForm loginForm = new LoginForm();
-            loginForm.Show();
-        }
-
-        private void Repeat_Click(object sender, EventArgs e)
-        {
-            Opponent1.Top = -130;
-            Opponent2.Top = -400;
-            Lose.Visible = false;
-            Restart.Visible = false;
-            Timer.Enabled = true;
-            lose = false;
-            coins = 0;
-            level = 1;
-            Score.Text = "Score:0";
-            Level.Text = "Рівень: 1";
-            Coin.Top = -500;
-            Pause.Visible = true;
-            Start.Visible = false;
-            LogMenuButton.Visible = false;
-            ShowRecordsButton.Visible = false;
-            _player.PlayLooping();
-        }
         private void SaveRecord()
         {
-            if (lose)
+            if (_currentState != GameState.Lost) return;
+
+            string playerName = "";
+            while (string.IsNullOrWhiteSpace(playerName))
             {
-                string playerName = "";
-                while (string.IsNullOrWhiteSpace(playerName))
+                playerName = Prompt.ShowDialog("Введіть ім'я", "New Record!");
+                if (string.IsNullOrWhiteSpace(playerName))
                 {
-                    playerName = Prompt.ShowDialog("Введіть імя", "New Record!");
-                    if (string.IsNullOrWhiteSpace(playerName))
-                    {
-                        MessageBox.Show("Рекорд не збережено!.\nБудь ласка, введіть ваше імя!", "Error");
-                    }
+                    MessageBox.Show("Рекорд не збережено! Будь ласка, введіть ваше ім'я!", "Error");
                 }
-                var existingRecord = records.FirstOrDefault(r => r.PlayerName == playerName);
-                if (existingRecord != null)
-                {
-                    if (coins > existingRecord.Score)
-                    {
-                        existingRecord.Score = coins;
-                    }
-                }
-                else
-                {
-                    records.Add(new Record(playerName, coins));
-                }
-                records = records.OrderByDescending(r => r.Score).Take(10).ToList();
-                RecordsManager.SaveRecords(records);
             }
+
+            var existingRecord = _records.FirstOrDefault(r => r.PlayerName == playerName);
+            if (existingRecord != null)
+            {
+                if (_score > existingRecord.Score) existingRecord.Score = _score;
+            }
+            else
+            {
+                _records.Add(new Record(playerName, _score));
+            }
+
+            _records = _records.OrderByDescending(r => r.Score).Take(10).ToList();
+            RecordsManager.SaveRecords(_records);
         }
 
-        private void ShowRecordsButton_Click(object sender, EventArgs e)
-        {
-            ShowRecords();
-        }
+        private void ShowRecordsButton_Click(object sender, EventArgs e) => ShowRecords();
 
         private void ShowRecords()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine("Name       Score");
-            foreach (var record in records)
+            foreach (var record in _records)
             {
-                sb.AppendLine($"{record.PlayerName}            {record.Score}");
+                sb.AppendLine($"{record.PlayerName,-10} {record.Score}");
             }
             MessageBox.Show(sb.ToString(), "Records");
         }
-        private void StopMusic()
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) => _soundManager.Stop();
+
+        private void UpdateUI()
         {
-            if (_player != null)
-            {
-                _player.Stop();
-            }
+            Score.Text = $"Score: {_score}";
+            Level.Text = $"Рівень: {_level}";
+
+            Start.Visible = _currentState != GameState.Running;
+            Pause.Visible = _currentState == GameState.Running;
+            Timer.Enabled = _currentState == GameState.Running;
+            Lose.Visible = _currentState == GameState.Lost;
+            Restart.Visible = _currentState == GameState.Lost;
+            LogMenuButton.Visible = _currentState != GameState.Running;
+            ShowRecordsButton.Visible = _currentState != GameState.Running;
         }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    }
+
+    public class SoundManager
+    {
+        private readonly SoundPlayer _player;
+
+        public SoundManager(string soundFile)
         {
-            StopMusic();
+            _player = new SoundPlayer(soundFile);
         }
+
+        public void PlayLooping() => _player.PlayLooping();
+        public void Stop() => _player.Stop();
     }
 }
