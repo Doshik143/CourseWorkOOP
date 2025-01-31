@@ -1,111 +1,88 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Курсова_Робота
 {
     public partial class LoginForm : Form
     {
+        private readonly AuthService _authService;
+        private Point _lastPoint;
+
         public LoginForm()
         {
             InitializeComponent();
-            this.Password.AutoSize = false;
-            this.Password.Size = new Size(this.Password.Size.Width, 64);
+            _authService = new AuthService();
+
+            Password.AutoSize = false;
+            Password.Size = new Size(Password.Size.Width, 64);
         }
 
-        private void Exit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void Exit_Click(object sender, EventArgs e) => Application.Exit();
 
-        private void Exit_MouseEnter(object sender, EventArgs e)
-        {
-            Exit.ForeColor = Color.Red;
-        }
+        private void Exit_MouseEnter(object sender, EventArgs e) => Exit.ForeColor = Color.Red;
 
-        private void Exit_MouseLeave(object sender, EventArgs e)
-        {
-            Exit.ForeColor = Color.White;
-        }
-        Point lastPoint;
-        private void Main_MouseMove(object sender, MouseEventArgs e)
+        private void Exit_MouseLeave(object sender, EventArgs e) => Exit.ForeColor = Color.White;
+
+        private void DragWindow(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.Left += e.X - lastPoint.X;
-                this.Top += e.Y - lastPoint.Y;
+                Left += e.X - _lastPoint.X;
+                Top += e.Y - _lastPoint.Y;
             }
         }
 
-        private void Main_MouseDown(object sender, MouseEventArgs e)
-        {
-            lastPoint = new Point(e.X, e.Y);
-        }
+        private void CaptureMousePosition(object sender, MouseEventArgs e) => _lastPoint = new Point(e.X, e.Y);
 
-        private void Up_MouseMove(object sender, MouseEventArgs e)
+        private void Login_Click(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            string username = Login.Text;
+            string password = Password.Text;
+
+            if (_authService.AuthenticateUser(username, password))
             {
-                this.Left += e.X - lastPoint.X;
-                this.Top += e.Y - lastPoint.Y;
-            }
-        }
-
-        private void Up_MouseDown(object sender, MouseEventArgs e)
-        {
-            lastPoint = new Point(e.X, e.Y);
-        }
-
-        private void Login_click_Click(object sender, EventArgs e)
-        {
-            String LogUser = Login.Text;
-            String PassUser = Password.Text;
-
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `Login` = @UL AND `Password` = @UP", db.GetConnection());
-            command.Parameters.Add("@UL", MySqlDbType.VarChar).Value = LogUser;
-            command.Parameters.Add("@UP", MySqlDbType.VarChar).Value = PassUser;
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            if (table.Rows.Count > 0)
-            {
-                this.Hide();
-                Form1 game = new Form1();
-                game.Show();
+                Hide();
+                new MainForm().Show();
             }
             else
+            {
                 MessageBox.Show("На жаль, користувача не знайдено :(\nПовторіть спробу!");
+            }
         }
 
         private void RegistrationLink_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            RegisterForm registerForm = new RegisterForm();
-            registerForm.Show();
+            Hide();
+            new RegisterForm().Show();
         }
 
-        private void RegistrationLink_MouseEnter(object sender, EventArgs e)
-        {
-            RegistrationLink.ForeColor = Color.Gray;
-        }
+        private void RegistrationLink_MouseEnter(object sender, EventArgs e) => RegistrationLink.ForeColor = Color.Gray;
 
-        private void RegistrationLink_MouseLeave(object sender, EventArgs e)
+        private void RegistrationLink_MouseLeave(object sender, EventArgs e) => RegistrationLink.ForeColor = Color.White;
+    }
+
+    public class AuthService
+    {
+        public bool AuthenticateUser(string username, string password)
         {
-            RegistrationLink.ForeColor = Color.White;
+            using (DB db = new DB()) 
+            {
+                var query = "SELECT COUNT(*) FROM users WHERE Login = @username AND Password = @password";
+                using (var command = new MySqlCommand(query, db.GetConnection()))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+
+                    db.OpenConnection();
+                    int userCount = Convert.ToInt32(command.ExecuteScalar());
+                    db.CloseConnection();
+
+                    return userCount > 0;
+                }
+            }
         }
     }
 }
