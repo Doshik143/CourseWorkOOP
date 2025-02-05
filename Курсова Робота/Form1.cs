@@ -48,67 +48,141 @@ namespace Курсова_Робота
             if(e.KeyChar==(char)Keys.Escape)
                 Application.Exit();
         }
-
+        
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int speed = 10;
-            Road.Top += speed;
-            Road2.Top += speed;
-            int carspeed = 7;
-            Opponent1.Top += carspeed;
-            Opponent2.Top += carspeed;
-            int cointime = 7;
-            Coin.Top += cointime;
-            if (Coin.Top >= 650)
-            {
-                Coin.Top = -50;
-                Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
-            }
-            if (Road.Top >= 650)
+            UpdateRoadPosition();    
+            MoveGameObjects();       
+            CheckCollisions();         
+            HandleCoinCollection(); 
+        }
+        private void UpdateRoadPosition()
+        {
+            const int roadSpeed = 10;
+            Road.Top += roadSpeed;
+            Road2.Top += roadSpeed;
+
+            if (Road.Top >= GameConstants.RoadResetPosition)
             {
                 Road.Top = 0;
-                Road2.Top = -650;
+                Road2.Top = -GameConstants.RoadResetPosition;
             }
-            if (Opponent1.Top >= 650)
+        }
+        
+        private void MoveGameObjects()
+        {
+            MoveOpponent(Opponent1, speed: 7, resetTop: -130, minSpawnX: 150, maxSpawnX: 299);
+            MoveOpponent(Opponent2, speed: 7, resetTop: -400, minSpawnX: 301, maxSpawnX: 560);
+            MoveCoin(speed: 7);
+        }
+        
+        private void MoveOpponent(PictureBox opponent, int speed, int resetTop, int minSpawnX, int maxSpawnX)
+        {
+            opponent.Top += speed;
+            if (opponent.Top >= GameConstants.RoadResetPosition)
             {
-                Opponent1.Top = -130;
-                Random rand = new Random();
-                Opponent1.Left = rand.Next(150, 299);
+                opponent.Top = resetTop;
+                opponent.Left = new Random().Next(minSpawnX, maxSpawnX);
             }
-            if (Opponent2.Top >= 650)
+        }
+        
+        private void MoveCoin(int speed)
+        {
+            Coin.Top += speed;
+            if (Coin.Top >= GameConstants.RoadResetPosition)
             {
-                Opponent2.Top = -400;
-                Random rand = new Random();
-                Opponent2.Left = rand.Next(301, 560);
+                RespawnCoin();
             }
-            if (Player.Bounds.IntersectsWith(Opponent1.Bounds) || Player.Bounds.IntersectsWith(Opponent2.Bounds))
+        }
+        
+        private void RespawnCoin()
+        {
+            Coin.Top = GameConstants.CoinRespawnHeight;
+            Coin.Left = new Random().Next(150, 560);
+        }
+        
+        private void CheckCollisions()
+        {
+            if (CollisionDetector.CheckCollision(Player, Opponent1) || 
+                CollisionDetector.CheckCollision(Player, Opponent2))
             {
-                Timer.Enabled = false;
-                Lose.Visible = true;
-                Restart.Visible = true;
-                Pause.Visible = false;
-                lose = true;
-                LogMenuButton.Visible = true;
-                SaveRecord();
-                ShowRecordsButton.Visible = true;
-                _player.Stop();
+                HandleGameOver();
             }
-            if (Player.Bounds.IntersectsWith(Coin.Bounds))
+        }
+        
+        private void HandleGameOver()
+        {
+            Timer.Enabled = false;
+            Lose.Visible = true;
+            Restart.Visible = true;
+            Pause.Visible = false;
+            lose = true;
+            LogMenuButton.Visible = true;
+            SaveRecord();
+            ShowRecordsButton.Visible = true;
+            _player.Stop();
+        }
+        
+        private void HandleCoinCollection()
+        {
+            if (CollisionDetector.CheckCollision(Player, Coin))
             {
                 coins++;
-                Score.Text = "Score:" + coins.ToString();
+                Score.Text = $"Score: {coins}";
                 if (coins % 10 == 0)
                 {
                     level++;
-                    Level.Text = "Рівень: " + level.ToString();
+                    Level.Text = $"Рівень: {level}";
                 }
-                Coin.Top = -50;
-                Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
+                RespawnCoin();
             }
         }
+        
+        private void SaveRecord()
+        {
+            if (lose)
+            {
+                string playerName = "";
+                while (string.IsNullOrWhiteSpace(playerName))
+                {
+                    playerName = Prompt.ShowDialog("Введіть ім'я", "New Record!");
+                    if (string.IsNullOrWhiteSpace(playerName))
+                    {
+                        MessageBox.Show("Рекорд не збережено!.\nБудь ласка, введіть ваше ім'я!", "Error");
+                    }
+                }
+                var existingRecord = records.FirstOrDefault(r => r.PlayerName == playerName);
+                if (existingRecord != null)
+                {
+                    if (coins > existingRecord.Score)
+                    {
+                        existingRecord.Score = coins;
+                    }
+                }
+                else
+                {
+                    records.Add(new Record(playerName, coins));
+                }
+                records = records.OrderByDescending(r => r.Score).Take(10).ToList();
+                RecordsManager.SaveRecords(records);
+            }
+        }
+        
+        private void ShowRecordsButton_Click(object sender, EventArgs e)
+        {
+            ShowRecords();
+        }
 
+        private void ShowRecords()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Name       Score");
+            foreach (var record in records)
+            {
+                sb.AppendLine($"{record.PlayerName}            {record.Score}");
+            }
+            MessageBox.Show(sb.ToString(), "Records");
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (lose) return;
@@ -218,51 +292,6 @@ namespace Курсова_Робота
             LogMenuButton.Visible = false;
             ShowRecordsButton.Visible = false;
             _player.PlayLooping();
-        }
-        private void SaveRecord()
-        {
-            if (lose)
-            {
-                string playerName = "";
-                while (string.IsNullOrWhiteSpace(playerName))
-                {
-                    playerName = Prompt.ShowDialog("Введіть імя", "New Record!");
-                    if (string.IsNullOrWhiteSpace(playerName))
-                    {
-                        MessageBox.Show("Рекорд не збережено!.\nБудь ласка, введіть ваше імя!", "Error");
-                    }
-                }
-                var existingRecord = records.FirstOrDefault(r => r.PlayerName == playerName);
-                if (existingRecord != null)
-                {
-                    if (coins > existingRecord.Score)
-                    {
-                        existingRecord.Score = coins;
-                    }
-                }
-                else
-                {
-                    records.Add(new Record(playerName, coins));
-                }
-                records = records.OrderByDescending(r => r.Score).Take(10).ToList();
-                RecordsManager.SaveRecords(records);
-            }
-        }
-
-        private void ShowRecordsButton_Click(object sender, EventArgs e)
-        {
-            ShowRecords();
-        }
-
-        private void ShowRecords()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Name       Score");
-            foreach (var record in records)
-            {
-                sb.AppendLine($"{record.PlayerName}            {record.Score}");
-            }
-            MessageBox.Show(sb.ToString(), "Records");
         }
         private void StopMusic()
         {
