@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseForm.cs" />
+    <Compile Include="CollisionDetector.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -58,6 +59,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameConstants.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
