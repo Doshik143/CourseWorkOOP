@@ -11,13 +11,18 @@ using System.Windows.Forms;
 
 namespace Курсова_Робота
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : BaseForm
     {
         public LoginForm()
         {
             InitializeComponent();
             this.Password.AutoSize = false;
             this.Password.Size = new Size(this.Password.Size.Width, 64);
+            
+            this.Main.MouseMove += HandleMouseMove;
+            this.Main.MouseDown += HandleMouseDown;
+            this.Up.MouseMove += HandleMouseMove;
+            this.Up.MouseDown += HandleMouseDown;
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -33,34 +38,6 @@ namespace Курсова_Робота
         private void Exit_MouseLeave(object sender, EventArgs e)
         {
             Exit.ForeColor = Color.White;
-        }
-        Point lastPoint;
-        private void Main_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - lastPoint.X;
-                this.Top += e.Y - lastPoint.Y;
-            }
-        }
-
-        private void Main_MouseDown(object sender, MouseEventArgs e)
-        {
-            lastPoint = new Point(e.X, e.Y);
-        }
-
-        private void Up_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - lastPoint.X;
-                this.Top += e.Y - lastPoint.Y;
-            }
-        }
-
-        private void Up_MouseDown(object sender, MouseEventArgs e)
-        {
-            lastPoint = new Point(e.X, e.Y);
         }
 
         private void Login_click_Click(object sender, EventArgs e)
