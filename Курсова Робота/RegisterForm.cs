@@ -131,6 +131,67 @@ namespace Курсова_Робота
         }
         private void Registration_Click(object sender, EventArgs e)
         {
+            CheckIntroductionFields();
+            StopCheckIfUserExist();
+            DB db;
+            MySqlCommand command;
+            ConnectionDB(out db, out command);
+            ResultOfCreatingAccount(command);
+
+            db.CloseConnection();
+        }
+
+        public Boolean IsUserExist()
+        {
+            DataTable table = ConnectionWithDB();
+            return CheckExistenceUser(table);
+        }
+
+        private void LoginLink_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
+        }
+
+        private void LoginLink_MouseEnter(object sender, EventArgs e)
+        {
+            LoginLink.ForeColor = Color.Gray;
+        }
+
+        private void LoginLink_MouseLeave(object sender, EventArgs e)
+        {
+            LoginLink.ForeColor = Color.White;
+        }
+
+        private static void ResultOfCreatingAccount(MySqlCommand command)
+        {
+            if (command.ExecuteNonQuery() == 1)
+                MessageBox.Show("Акаунт успішно створено!\nДякуємо за реєстрацію!");
+            else
+                MessageBox.Show("Не вдалося створити акаунт :(\nСпробуйте ще раз!");
+        }
+
+        private void ConnectionDB(out DB db, out MySqlCommand command)
+        {
+            db = new DB();
+            command = new MySqlCommand("INSERT INTO `users` (`Login`, `Password`, `Name`, `Surname`) VALUES (@login, @password, @name, @surname)", db.GetConnection());
+            command.Parameters.Add("@login", MySqlDbType.VarChar).Value = Login.Text;
+            command.Parameters.Add("@password", MySqlDbType.VarChar).Value = Password.Text;
+            command.Parameters.Add("@name", MySqlDbType.VarChar).Value = NameLine.Text;
+            command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = Surname.Text;
+
+            db.OpenConnection();
+        }
+
+        private void StopCheckIfUserExist()
+        {
+            if (IsUserExist())
+                return;
+        }
+
+        private void CheckIntroductionFields()
+        {
             if (NameLine.Text == "Введіть ім'я")
             {
                 MessageBox.Show("Введіть ім'я!");
@@ -154,29 +215,20 @@ namespace Курсова_Робота
                 MessageBox.Show("Введіть пароль!");
                 return;
             }
-
-            if (IsUserExist())
-                return;
-
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("INSERT INTO `users` (`Login`, `Password`, `Name`, `Surname`) VALUES (@login, @password, @name, @surname)", db.GetConnection());
-
-            command.Parameters.Add("@login", MySqlDbType.VarChar).Value = Login.Text;
-            command.Parameters.Add("@password", MySqlDbType.VarChar).Value = Password.Text;
-            command.Parameters.Add("@name", MySqlDbType.VarChar).Value = NameLine.Text;
-            command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = Surname.Text;
-
-            db.OpenConnection();
-
-            if (command.ExecuteNonQuery() == 1)
-                MessageBox.Show("Акаунт успішно створено!\nДякуємо за реєстрацію!");
-            else
-                MessageBox.Show("Не вдалося створити акаунт :(\nСпробуйте ще раз!");
-
-            db.CloseConnection();
         }
 
-        public Boolean IsUserExist()
+        private static bool CheckExistenceUser(DataTable table)
+        {
+            if (table.Rows.Count > 0)
+            {
+                MessageBox.Show("Такий користувач вже існує!\nВведіть інший логін!");
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private DataTable ConnectionWithDB()
         {
             DB db = new DB();
 
@@ -189,31 +241,7 @@ namespace Курсова_Робота
 
             adapter.SelectCommand = command;
             adapter.Fill(table);
-
-            if (table.Rows.Count > 0)
-            {
-                MessageBox.Show("Такий користувач вже існує!\nВведіть інший логін!");
-                return true;
-            }
-            else
-                return false;
-        }
-
-        private void LoginLink_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            LoginForm loginForm = new LoginForm();
-            loginForm.Show();
-        }
-
-        private void LoginLink_MouseEnter(object sender, EventArgs e)
-        {
-            LoginLink.ForeColor = Color.Gray;
-        }
-
-        private void LoginLink_MouseLeave(object sender, EventArgs e)
-        {
-            LoginLink.ForeColor = Color.White;
+            return table;
         }
     }
 }

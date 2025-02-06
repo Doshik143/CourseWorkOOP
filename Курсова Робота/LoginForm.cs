@@ -67,28 +67,14 @@ namespace Курсова_Робота
         {
             String LogUser = Login.Text;
             String PassUser = Password.Text;
-
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `Login` = @UL AND `Password` = @UP", db.GetConnection());
-            command.Parameters.Add("@UL", MySqlDbType.VarChar).Value = LogUser;
-            command.Parameters.Add("@UP", MySqlDbType.VarChar).Value = PassUser;
+            DataTable table;
+            MySqlDataAdapter adapter;
+            MySqlCommand command;
+            ConnectWithDB(LogUser, PassUser, out table, out adapter, out command);
 
             adapter.SelectCommand = command;
             adapter.Fill(table);
-
-            if (table.Rows.Count > 0)
-            {
-                this.Hide();
-                Form1 game = new Form1();
-                game.Show();
-            }
-            else
-                MessageBox.Show("На жаль, користувача не знайдено :(\nПовторіть спробу!");
+            UserAuthorization(table);
         }
 
         private void RegistrationLink_Click(object sender, EventArgs e)
@@ -106,6 +92,29 @@ namespace Курсова_Робота
         private void RegistrationLink_MouseLeave(object sender, EventArgs e)
         {
             RegistrationLink.ForeColor = Color.White;
+        }
+
+        private void UserAuthorization(DataTable table)
+        {
+            if (table.Rows.Count > 0)
+            {
+                this.Hide();
+                Form1 game = new Form1();
+                game.Show();
+            }
+            else
+                MessageBox.Show("На жаль, користувача не знайдено :(\nПовторіть спробу!");
+        }
+
+        private static void ConnectWithDB(string LogUser, string PassUser, out DataTable table, out MySqlDataAdapter adapter, out MySqlCommand command)
+        {
+            DB db = new DB();
+
+            table = new DataTable();
+            adapter = new MySqlDataAdapter();
+            command = new MySqlCommand("SELECT * FROM `users` WHERE `Login` = @UL AND `Password` = @UP", db.GetConnection());
+            command.Parameters.Add("@UL", MySqlDbType.VarChar).Value = LogUser;
+            command.Parameters.Add("@UP", MySqlDbType.VarChar).Value = PassUser;
         }
     }
 }

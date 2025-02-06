@@ -59,55 +59,15 @@ namespace Курсова_Робота
             Opponent2.Top += carspeed;
             int cointime = 7;
             Coin.Top += cointime;
-            if (Coin.Top >= 650)
-            {
-                Coin.Top = -50;
-                Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
-            }
-            if (Road.Top >= 650)
-            {
-                Road.Top = 0;
-                Road2.Top = -650;
-            }
-            if (Opponent1.Top >= 650)
-            {
-                Opponent1.Top = -130;
-                Random rand = new Random();
-                Opponent1.Left = rand.Next(150, 299);
-            }
-            if (Opponent2.Top >= 650)
-            {
-                Opponent2.Top = -400;
-                Random rand = new Random();
-                Opponent2.Left = rand.Next(301, 560);
-            }
-            if (Player.Bounds.IntersectsWith(Opponent1.Bounds) || Player.Bounds.IntersectsWith(Opponent2.Bounds))
-            {
-                Timer.Enabled = false;
-                Lose.Visible = true;
-                Restart.Visible = true;
-                Pause.Visible = false;
-                lose = true;
-                LogMenuButton.Visible = true;
-                SaveRecord();
-                ShowRecordsButton.Visible = true;
-                _player.Stop();
-            }
-            if (Player.Bounds.IntersectsWith(Coin.Bounds))
-            {
-                coins++;
-                Score.Text = "Score:" + coins.ToString();
-                if (coins % 10 == 0)
-                {
-                    level++;
-                    Level.Text = "Рівень: " + level.ToString();
-                }
-                Coin.Top = -50;
-                Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
-            }
+            RandEmersionCoin();
+            RoadAnimation();
+            RandEmersionOpponent1();
+            RandEmersionOpponent2();
+            PlayerBounseLose();
+            PlayerCollectCoin();
         }
+
+        
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -224,27 +184,10 @@ namespace Курсова_Робота
             if (lose)
             {
                 string playerName = "";
-                while (string.IsNullOrWhiteSpace(playerName))
-                {
-                    playerName = Prompt.ShowDialog("Введіть імя", "New Record!");
-                    if (string.IsNullOrWhiteSpace(playerName))
-                    {
-                        MessageBox.Show("Рекорд не збережено!.\nБудь ласка, введіть ваше імя!", "Error");
-                    }
-                }
-                var existingRecord = records.FirstOrDefault(r => r.PlayerName == playerName);
-                if (existingRecord != null)
-                {
-                    if (coins > existingRecord.Score)
-                    {
-                        existingRecord.Score = coins;
-                    }
-                }
-                else
-                {
-                    records.Add(new Record(playerName, coins));
-                }
-                records = records.OrderByDescending(r => r.Score).Take(10).ToList();
+                playerName = CreateNameForRecord(playerName);
+                Record existingRecord = CheckExistenceRecord(playerName);
+                UpdateOrAddNewRecord(playerName, existingRecord);
+                SortOrSaveTopTenRecords();
                 RecordsManager.SaveRecords(records);
             }
         }
@@ -257,23 +200,146 @@ namespace Курсова_Робота
         private void ShowRecords()
         {
             StringBuilder sb = new StringBuilder();
+            PresentRecordsTable(sb);
+            MessageBox.Show(sb.ToString(), "Records");
+        }
+
+        private void StopMusic()
+        {
+            StopMusicIfLose();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            StopMusic();
+        }
+
+        private void PlayerCollectCoin()
+        {
+            if (Player.Bounds.IntersectsWith(Coin.Bounds))
+            {
+                coins++;
+                Score.Text = "Score:" + coins.ToString();
+                if (coins % 10 == 0)
+                {
+                    level++;
+                    Level.Text = "Рівень: " + level.ToString();
+                }
+                Coin.Top = -50;
+                Random rand = new Random();
+                Coin.Left = rand.Next(150, 560);
+            }
+        }
+
+        private void PlayerBounseLose()
+        {
+            if (Player.Bounds.IntersectsWith(Opponent1.Bounds) || Player.Bounds.IntersectsWith(Opponent2.Bounds))
+            {
+                Timer.Enabled = false;
+                Lose.Visible = true;
+                Restart.Visible = true;
+                Pause.Visible = false;
+                lose = true;
+                LogMenuButton.Visible = true;
+                SaveRecord();
+                ShowRecordsButton.Visible = true;
+                _player.Stop();
+            }
+        }
+
+        private void RandEmersionOpponent2()
+        {
+            if (Opponent2.Top >= 650)
+            {
+                Opponent2.Top = -400;
+                Random rand = new Random();
+                Opponent2.Left = rand.Next(301, 560);
+            }
+        }
+
+        private void RandEmersionOpponent1()
+        {
+            if (Opponent1.Top >= 650)
+            {
+                Opponent1.Top = -130;
+                Random rand = new Random();
+                Opponent1.Left = rand.Next(150, 299);
+            }
+        }
+
+        private void RoadAnimation()
+        {
+            if (Road.Top >= 650)
+            {
+                Road.Top = 0;
+                Road2.Top = -650;
+            }
+        }
+
+        private void RandEmersionCoin()
+        {
+            if (Coin.Top >= 650)
+            {
+                Coin.Top = -50;
+                Random rand = new Random();
+                Coin.Left = rand.Next(150, 560);
+            }
+        }
+
+        private void SortOrSaveTopTenRecords()
+        {
+            records = records.OrderByDescending(r => r.Score).Take(10).ToList();
+        }
+
+        private void UpdateOrAddNewRecord(string playerName, Record existingRecord)
+        {
+            if (existingRecord != null)
+            {
+                if (coins > existingRecord.Score)
+                {
+                    existingRecord.Score = coins;
+                }
+            }
+            else
+            {
+                records.Add(new Record(playerName, coins));
+            }
+        }
+
+        private Record CheckExistenceRecord(string playerName)
+        {
+            return records.FirstOrDefault(r => r.PlayerName == playerName);
+        }
+
+        private static string CreateNameForRecord(string playerName)
+        {
+            while (string.IsNullOrWhiteSpace(playerName))
+            {
+                playerName = Prompt.ShowDialog("Введіть імя", "New Record!");
+                if (string.IsNullOrWhiteSpace(playerName))
+                {
+                    MessageBox.Show("Рекорд не збережено!.\nБудь ласка, введіть ваше імя!", "Error");
+                }
+            }
+
+            return playerName;
+        }
+
+        private void PresentRecordsTable(StringBuilder sb)
+        {
             sb.AppendLine("Name       Score");
             foreach (var record in records)
             {
                 sb.AppendLine($"{record.PlayerName}            {record.Score}");
             }
-            MessageBox.Show(sb.ToString(), "Records");
         }
-        private void StopMusic()
+
+        private void StopMusicIfLose()
         {
             if (_player != null)
             {
                 _player.Stop();
             }
-        }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            StopMusic();
         }
     }
 }
