@@ -15,21 +15,15 @@ namespace Курсова_Робота
 
         public static void SaveRecords(List<Record> records)
         {
-            using (Stream stream = File.Open(filePath, FileMode.Create))
-            {
-                try
-                {
-                    _bin.Serialize(stream, records);
-                }
-                catch (SerializationException e)
-                {
-                    Console.WriteLine("Failed to serialize. Reason: " + e.Message);
-                    throw;
-                }
-            }
+            CreateAndSaveListRecords(records);
         }
 
         public static List<Record> LoadRecords()
+        {
+            return FindAndLoadListRecords();
+        }
+
+        private static List<Record> FindAndLoadListRecords()
         {
             if (!File.Exists(filePath))
             {
@@ -45,6 +39,22 @@ namespace Курсова_Робота
                 catch (SerializationException e)
                 {
                     Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                    throw;
+                }
+            }
+        }
+
+        private static void CreateAndSaveListRecords(List<Record> records)
+        {
+            using (Stream stream = File.Open(filePath, FileMode.Create))
+            {
+                try
+                {
+                    _bin.Serialize(stream, records);
+                }
+                catch (SerializationException e)
+                {
+                    Console.WriteLine("Failed to serialize. Reason: " + e.Message);
                     throw;
                 }
             }

@@ -36,3 +36,12 @@ C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робо�
 C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Retro Tr.F3E28D42.Up2Date
 C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова Робота.exe
 C:\Users\ipz23\source\repos\1 Курс\2 Семестр\Курсова Робота\Курсова Робота\obj\Debug\Курсова Робота.pdb
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.AssemblyReference.cache
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.Form1.resources
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.LoginForm.resources
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.Properties.Resources.resources
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.RegisterForm.resources
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.GenerateResource.cache
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.CoreCompileInputs.cache
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова Робота.exe
+C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова Робота.pdb

@@ -12,17 +12,29 @@ namespace Курсова_Робота
         MySqlConnection connection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=coursework1");
         public void OpenConnection()
         {
-            if (connection.State == System.Data.ConnectionState.Closed)
-                connection.Open();
+            OpensConnectionIfItsClose();
         }
+
         public void CloseConnection()
         {
-            if (connection.State == System.Data.ConnectionState.Open)
-                connection.Close();
+            ClosesConnectionIfItsOpen();
         }
+
         public MySqlConnection GetConnection()
         {
             return connection;
+        }
+
+        private void OpensConnectionIfItsClose()
+        {
+            if (connection.State == System.Data.ConnectionState.Closed)
+                connection.Open();
+        }
+
+        private void ClosesConnectionIfItsOpen()
+        {
+            if (connection.State == System.Data.ConnectionState.Open)
+                connection.Close();
         }
     }
 }
