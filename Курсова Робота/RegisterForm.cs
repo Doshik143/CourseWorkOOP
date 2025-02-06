@@ -87,7 +87,7 @@ namespace Курсова_Робота
 
         private void NameLine_Leave(object sender, EventArgs e)
         {
-            if (NameLine.Text == "")
+            if (string.IsNullOrEmpty(NameLine.Text))
             {
                 NameLine.Text = "Введіть ім'я";
                 NameLine.ForeColor = Color.Gray;
@@ -105,7 +105,7 @@ namespace Курсова_Робота
 
         private void Surname_Leave(object sender, EventArgs e)
         {
-            if (Surname.Text == "")
+            if (string.IsNullOrEmpty(NameLine.Text))
             {
                 Surname.Text = "Введіть прізвище";
                 Surname.ForeColor = Color.Gray;
@@ -123,7 +123,7 @@ namespace Курсова_Робота
 
         private void Login_Leave(object sender, EventArgs e)
         {
-            if (Login.Text == "")
+            if (string.IsNullOrEmpty(NameLine.Text))
             {
                 Login.Text = "Введіть логін";
                 Login.ForeColor = Color.Gray;
@@ -210,7 +210,7 @@ namespace Курсова_Робота
                 return;
             }
 
-            if (Password.Text == "")
+            if (string.IsNullOrEmpty(NameLine.Text))
             {
                 MessageBox.Show("Введіть пароль!");
                 return;
