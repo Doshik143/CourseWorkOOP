@@ -56,9 +56,25 @@ C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсов�
 C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.RegisterForm.resources
 C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.GenerateResource.cache
 C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.CoreCompileInputs.cache
-<<<<<<< HEAD
-=======
 C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Tr.F3E28D42.Up2Date
->>>>>>> 3ca19ac08f531bf7e66899b563640b249163ef8a
 C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова Робота.exe
 C:\Users\ipz23\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова Робота.pdb
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\sound.wav
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\Курсова Робота.exe.config
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\Курсова Робота.exe
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\Курсова Робота.pdb
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\System.Memory.dll
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\System.Numerics.Vectors.dll
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\System.Buffers.dll
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\bin\Debug\MySql.Data.xml
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.AssemblyReference.cache
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.Form1.resources
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.LoginForm.resources
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.Properties.Resources.resources
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова_Робота.RegisterForm.resources
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.GenerateResource.cache
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Traffic Racer.csproj.CoreCompileInputs.cache
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Retro Tr.F3E28D42.Up2Date
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова Робота.exe
+D:\University\Semester 4\практика\CourseWorkOOP\Курсова Робота\obj\Debug\Курсова Робота.pdb

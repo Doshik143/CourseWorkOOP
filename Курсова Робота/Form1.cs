@@ -13,6 +13,24 @@ namespace Курсова_Робота
 {
     public partial class Form1 : Form
     {
+        private const int RoadSpeed = 10;
+        private const int CarSpeed = 7;
+        private const int CoinSpeed = 7;
+        private const int PlayerSpeed = 13;
+        private const int LeftBoundary = 150;
+        private const int RightBoundary = 700;
+        private const int Opponent1ResetY = -130;
+        private const int Opponent2ResetY = -400;
+        private const int CoinResetY = -50;
+        private const int RoadResetY = 650;
+        private const int CoinCollectionThreshold = 10;
+        private const int CoinLeftMin = 150;
+        private const int CoinLeftMax = 560;
+        private const int Opponent1LeftMin = 150;
+        private const int Opponent1LeftMax = 299;
+        private const int Opponent2LeftMin = 301;
+        private const int Opponent2LeftMax = 560;
+
         private SoundPlayer _player;
         private List<Record> records;
         private Point pos;
@@ -22,7 +40,7 @@ namespace Курсова_Робота
         public Form1()
         {
             InitializeComponent();
-            
+
             Lose.Visible = false;
             Restart.Visible = false;
 
@@ -45,19 +63,19 @@ namespace Курсова_Робота
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar==(char)Keys.Escape)
+            if (e.KeyChar == (char)Keys.Escape)
                 Application.Exit();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int speed = 10;
+            int speed = RoadSpeed;
             Road.Top += speed;
             Road2.Top += speed;
-            int carspeed = 7;
+            int carspeed = CarSpeed;
             Opponent1.Top += carspeed;
             Opponent2.Top += carspeed;
-            int cointime = 7;
+            int cointime = CoinSpeed;
             Coin.Top += cointime;
             RandEmersionCoin();
             RoadAnimation();
@@ -67,15 +85,15 @@ namespace Курсова_Робота
             PlayerCollectCoin();
         }
 
-        
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (lose) return;
-            int speed = 13;
-            if ((e.KeyCode == Keys.Left || e.KeyCode == Keys.A) && Player.Left > 150)
+            int speed = PlayerSpeed;
+            if ((e.KeyCode == Keys.Left || e.KeyCode == Keys.A) && Player.Left > LeftBoundary)
                 Player.Left -= speed;
-            else if ((e.KeyCode == Keys.Right || e.KeyCode == Keys.D) && Player.Right < 700)
+            else if ((e.KeyCode == Keys.Right || e.KeyCode == Keys.D) && Player.Right < RightBoundary)
                 Player.Left += speed;
         }
 
@@ -162,8 +180,8 @@ namespace Курсова_Робота
 
         private void Repeat_Click(object sender, EventArgs e)
         {
-            Opponent1.Top = -130;
-            Opponent2.Top = -400;
+            Opponent1.Top = Opponent1ResetY;
+            Opponent2.Top = Opponent2ResetY;
             Lose.Visible = false;
             Restart.Visible = false;
             Timer.Enabled = true;
@@ -249,40 +267,40 @@ namespace Курсова_Робота
 
         private void RandEmersionOpponent2()
         {
-            if (Opponent2.Top >= 650)
+            if (Opponent2.Top >= RoadResetY)
             {
-                Opponent2.Top = -400;
+                Opponent2.Top = Opponent2ResetY;
                 Random rand = new Random();
-                Opponent2.Left = rand.Next(301, 560);
+                Opponent2.Left = rand.Next(Opponent2LeftMin, Opponent2LeftMax);
             }
         }
 
         private void RandEmersionOpponent1()
         {
-            if (Opponent1.Top >= 650)
+            if (Opponent1.Top >= RoadResetY)
             {
-                Opponent1.Top = -130;
+                Opponent1.Top = Opponent1ResetY;
                 Random rand = new Random();
-                Opponent1.Left = rand.Next(150, 299);
+                Opponent1.Left = rand.Next(Opponent1LeftMin, Opponent1LeftMax);
             }
         }
 
         private void RoadAnimation()
         {
-            if (Road.Top >= 650)
+            if (Road.Top >= RoadResetY)
             {
                 Road.Top = 0;
-                Road2.Top = -650;
+                Road2.Top = -RoadResetY;
             }
         }
 
         private void RandEmersionCoin()
         {
-            if (Coin.Top >= 650)
+            if (Coin.Top >= RoadResetY)
             {
-                Coin.Top = -50;
+                Coin.Top = CoinResetY;
                 Random rand = new Random();
-                Coin.Left = rand.Next(150, 560);
+                Coin.Left = rand.Next(Opponent1LeftMin, Opponent2LeftMax);
             }
         }
 
